@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -11,18 +5,16 @@ import {
   View
 } from 'react-native';
 import { StackNavigator } from 'react-navigation';
-
-class HomeScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Welcome',
-  };
-  render() {
-    return <Text>Hello, Navigation!</Text>;
-  }
-}
+import {
+  HomeScreen,
+  StatsScreen,
+  SettingsScreen
+} from './screens';
 
 const App = StackNavigator({
   Home: { screen: HomeScreen },
+  Stats: { screen: StatsScreen },
+  Settings: { screen: SettingsScreen }
 });
 
 export default App;

@@ -5,9 +5,9 @@ import {
   View
 } from 'react-native';
 
-export default class StatsScreen extends React.Component {
+export default class HomeScreen extends React.Component {
   static navigationOptions = {
-    title: 'Stats',
+    title: 'Home',
   };
   render() {
     return <Text>Hello, Navigation!</Text>;
