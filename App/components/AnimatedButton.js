@@ -21,6 +21,29 @@ export default class AnimatedButton extends React.Component {
     } else if (!next.isSelected && this.props.isSelected) {
       this.deselect();
     }
+    if (next.shouldDisappear && !this.props.shouldDisappear) {
+      console.log('disppear')
+      this.disappear();
+    }
+    if (!next.shouldDisappear && this.props.shouldDisappear) {
+      this.reappear()
+    }
+  }
+
+  disappear() {
+    Animated.timing(this.state.opacity, {
+      toValue: 0,
+      duration: 500,
+      easing: Easing.linear
+    }).start();
+  }
+
+  reappear() {
+    Animated.timing(this.state.opacity, {
+      toValue: .75,
+      duration: 500,
+      easing: Easing.linear
+    }).start();
   }
 
   select() {
