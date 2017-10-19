@@ -1,12 +1,12 @@
 import React from 'react'
-import { TouchableOpacity, Text, View } from 'react-native'
+import { TouchableOpacity, Text, View, Animated } from 'react-native'
 
-export default function Button({ label, onPress, backgroundColor, color, style }) {
+export default function Button({ label, onPress, backgroundColor, color, style, textStyles }) {
   return (
-    <TouchableOpacity onPress={onPress} style={[styles.touchable, style]}>
-      <View backgroundColor={backgroundColor} style={[styles.container]}>
-        <Text style={[styles.text, { color: color, backgroundColor: 'transparent' }]}>{label}</Text>
-      </View>
+    <TouchableOpacity onPress={onPress} style={styles.touchable}>
+      <Animated.View style={[styles.container, style, { backgroundColor: backgroundColor}]}>
+        <Animated.Text style={[styles.text, textStyles, { color: color, backgroundColor: 'transparent' }]}>{label}</Animated.Text>
+      </Animated.View>
     </TouchableOpacity>
   )
 }

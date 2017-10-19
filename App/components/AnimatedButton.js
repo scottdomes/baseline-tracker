@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, Dimensions, Easing } from 'react-native';
+import { Animated, Dimensions, Easing, View } from 'react-native';
 import Button from './Button';
 
 export default class AnimatedButton extends React.Component {
@@ -7,7 +7,10 @@ export default class AnimatedButton extends React.Component {
     super(props);
     this.state = {
       opacity: new Animated.Value(0.75), // Initial value for opacity: 0
-      width: new Animated.Value(Dimensions.get('window').width)
+      width: new Animated.Value(Dimensions.get('window').width),
+      alignSelf: 'center',
+      borderRadius: new Animated.Value(0),
+      textOpacity: new Animated.Value(1)
     };
   }
 
@@ -22,11 +25,26 @@ export default class AnimatedButton extends React.Component {
 
   select() {
     const widthAnimation = Animated.timing(this.state.width, {
-      toValue: 100,
+      toValue: 80,
       duration: 500,
       easing: Easing.linear
     });
-    Animated.parallel([widthAnimation]).start();
+    const borderAnimation = Animated.timing(this.state.borderRadius, {
+      toValue: 1000,
+      duration: 500,
+      easing: Easing.linear
+    });
+    const textAnimation = Animated.timing(this.state.textOpacity, {
+      toValue: 0,
+      duration: 100
+    });
+    setTimeout(() => {
+      Animated.timing(this.state.textOpacity, {
+        toValue: 1,
+        duration: 100
+      }).start();
+    }, 400);
+    Animated.parallel([widthAnimation, borderAnimation, textAnimation]).start();
   }
 
   deselect() {
@@ -35,7 +53,22 @@ export default class AnimatedButton extends React.Component {
       duration: 500,
       easing: Easing.linear
     });
-    Animated.parallel([widthAnimation]).start();
+    const borderAnimation = Animated.timing(this.state.borderRadius, {
+      toValue: 0,
+      duration: 500,
+      easing: Easing.linear
+    });
+    const textAnimation = Animated.timing(this.state.textOpacity, {
+      toValue: 0,
+      duration: 100
+    });
+    setTimeout(() => {
+      Animated.timing(this.state.textOpacity, {
+        toValue: 1,
+        duration: 100
+      }).start();
+    }, 400);
+    Animated.parallel([widthAnimation, borderAnimation, textAnimation]).start();
   }
 
   render() {
@@ -47,15 +80,22 @@ export default class AnimatedButton extends React.Component {
       color
     } = this.props;
     return (
-      <Animated.View style={this.state}>
-        <Button
-          onPress={onPress}
-          label={label}
-          color={color}
-          backgroundColor={backgroundColor}
-          accessibilityLabel={accessibilityLabel}
-        />
-      </Animated.View>
+      <View
+        style={{
+          flexDirection: 'column'
+        }}>
+        <Animated.View style={this.state}>
+          <Button
+            onPress={onPress}
+            label={label}
+            style={{ borderRadius: this.state.borderRadius }}
+            color={color}
+            textStyles={{ opacity: this.state.textOpacity }}
+            backgroundColor={backgroundColor}
+            accessibilityLabel={accessibilityLabel}
+          />
+        </Animated.View>
+      </View>
     );
   }
 }
