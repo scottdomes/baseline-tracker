@@ -11,38 +11,43 @@ import {
   Dimensions,
   Easing
 } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import LabelledTextInput from '../components/LabelledTextInput';
 import AnimatedButton from '../components/AnimatedButton';
+import selectValueAction from '../actions/selectValueAction';
 import { COLORS } from '../components/Theme';
 
-export default class HomeScreen extends React.Component {
+class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedButtonIndex: null,
       containerHeight: new Animated.Value(Dimensions.get('window').height)
     };
   }
 
-  handlePress(selectedButtonIndex) {
-    if (this.state.selectedButtonIndex === selectedButtonIndex) {
-      this.setState({ selectedButtonIndex: null });
+  handlePress(value) {
+    if (this.props.value === value) {
+      this.props.selectValue(null)
     } else {
-      this.setState({ selectedButtonIndex });
+      this.props.selectValue(value)
     }
   }
 
   renderButtons() {
     return Array.from(Array(10).keys()).map(number => {
       const num = number + 1;
-      const isSelected = this.state.selectedButtonIndex === number;
-      const shouldDisappear = Boolean(this.state.selectedButtonIndex && !isSelected)
+      const isSelected = this.props.value === num;
+      const shouldDisappear = Boolean(
+        this.props.value && !isSelected
+      );
       return (
         <AnimatedButton
           isSelected={isSelected}
           shouldDisappear={shouldDisappear}
           key={`button${num}`}
-          onPress={this.handlePress.bind(this, number)}
+          onPress={this.handlePress.bind(this, number + 1)}
           label={`${num}`}
           color="#000000"
           backgroundColor={COLORS[number]}
@@ -66,6 +71,18 @@ export default class HomeScreen extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    value: state.newRecord.value
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ selectValue: selectValueAction }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
 
 const styles = StyleSheet.create({
   container: {

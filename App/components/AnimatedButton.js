@@ -14,7 +14,8 @@ export default class AnimatedButton extends React.Component {
       width: new Animated.Value(Dimensions.get('window').width),
       height: new Animated.Value(55),
       borderRadius: new Animated.Value(0),
-      textOpacity: new Animated.Value(1)
+      textOpacity: new Animated.Value(1),
+      display: 'flex'
     };
   }
 
@@ -43,9 +44,13 @@ export default class AnimatedButton extends React.Component {
       duration: ANIMATION_SPEED,
       easing: Easing.linear
     }).start();
+    setTimeout(() => {
+      this.setState({ display: 'none' })
+    }, ANIMATION_SPEED)
   }
 
   reappear() {
+    this.setState({ display: 'flex' })
     setTimeout(() => {
       Animated.timing(this.state.opacity, {
         toValue: 0.75,
@@ -128,6 +133,7 @@ export default class AnimatedButton extends React.Component {
             height: this.state.height,
             opacity: this.state.opacity,
             width: this.state.width,
+            display: this.state.display,
             alignSelf: 'center'
           }}>
           <Button
