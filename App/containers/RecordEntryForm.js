@@ -1,14 +1,24 @@
 import React, { Component } from 'react';
-import { View, Animated } from 'react-native';
+import { View, Animated, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import AnimatedButton from '../components/AnimatedButton';
-import selectValueAction from '../actions/selectValueAction';
+import {
+  selectValueAction,
+  changeRecordLocationAction,
+  changeRecordTagsAction
+} from '../actions';
 import { COLORS } from '../components/Theme';
 import LabelledTextInput from '../components/LabelledTextInput';
 
 class RecordEntryForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      newTag: ''
+    };
+  }
   handlePress(value) {
     if (this.props.value === value) {
       this.props.selectValue(null);
@@ -37,11 +47,37 @@ class RecordEntryForm extends Component {
     });
   }
 
+  handleLocationChange = text => {
+    this.props.changeLocation(text);
+  };
+
+  handleNewTagKeyDown = e => {
+    const { key } = e.nativeEvent;
+    if (key === ',' || key === ' ') {
+      this.props.changeTags(this.state.newTag);
+      this.setState({ newTag: '' });
+    } else {
+      const newTag = this.state.newTag + key
+      this.setState({ newTag })
+    }
+  };
+
   render() {
+    const { tags, location } = this.props;
     return (
       <View>
         {this.renderButtons()}
-        <LabelledTextInput />
+        <LabelledTextInput
+          label="Location"
+          value={location}
+          onChangeText={this.handleLocationChange}
+        />
+        <LabelledTextInput
+          label="Tags"
+          value={this.state.newTag}
+          onKeyPress={this.handleNewTagKeyDown}
+        />
+        {tags.map(tag => <Text key={tag}>{tag}</Text>)}
       </View>
     );
   }
@@ -49,12 +85,21 @@ class RecordEntryForm extends Component {
 
 function mapStateToProps(state) {
   return {
-    value: state.newRecord.value
+    value: state.newRecord.value,
+    tags: state.newRecord.tags,
+    location: state.newRecord.location
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ selectValue: selectValueAction }, dispatch);
+  return bindActionCreators(
+    {
+      selectValue: selectValueAction,
+      changeTags: changeRecordTagsAction,
+      changeLocation: changeRecordLocationAction
+    },
+    dispatch
+  );
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecordEntryForm);
