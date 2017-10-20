@@ -12,7 +12,7 @@ import {
 } from '../actions';
 import { COLORS } from '../components/Theme';
 import LabelledTextInput from '../components/LabelledTextInput';
-import Button from '../components/Button';
+import ExplodingButton from '../components/ExplodingButton';
 
 class RecordEntryForm extends Component {
   constructor(props) {
@@ -66,7 +66,7 @@ class RecordEntryForm extends Component {
 
   handleSave = () => {
     const { value, location, tags, saveRecord } = this.props
-    saveRecord({
+    return saveRecord({
       type: 'happiness',
       value,
       location,
@@ -90,7 +90,7 @@ class RecordEntryForm extends Component {
           onKeyPress={this.handleNewTagKeyDown}
         />
         {tags.map(tag => <Text key={tag}>{tag}</Text>)}
-        <Button label="Save" backgroundColor={COLORS[1]} onPress={this.handleSave} />
+        <ExplodingButton label="Save" backgroundColor={COLORS[1]} onPress={this.handleSave} />
       </View>
     );
   }

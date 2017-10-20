@@ -3,8 +3,9 @@ import FetchResource from '../resources/FetchResource'
 import config from '../config'
 
 function postRecord(value) {
-  console.log(value)
-  return FetchResource.post(`${config.API_URL}/records`, value)
+  // return FetchResource.post(`${config.API_URL}/records`, value)
+  console.log('post')
+  return Promise.resolve()
 }
 
 export default function saveRecord(value) {
