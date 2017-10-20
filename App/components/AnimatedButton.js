@@ -8,7 +8,7 @@ export default class AnimatedButton extends React.Component {
     this.state = {
       opacity: new Animated.Value(0.75), // Initial value for opacity: 0
       width: new Animated.Value(Dimensions.get('window').width),
-      alignSelf: 'center',
+      height: new Animated.Value(55),
       borderRadius: new Animated.Value(0),
       textOpacity: new Animated.Value(1)
     };
@@ -33,14 +33,26 @@ export default class AnimatedButton extends React.Component {
   disappear() {
     Animated.timing(this.state.opacity, {
       toValue: 0,
+      duration: 100,
+      easing: Easing.linear
+    }).start();
+    Animated.timing(this.state.height, {
+      toValue: 0,
       duration: 500,
       easing: Easing.linear
     }).start();
   }
 
   reappear() {
-    Animated.timing(this.state.opacity, {
+    setTimeout(() => {
+      Animated.timing(this.state.opacity, {
       toValue: .75,
+      duration: 100,
+      easing: Easing.linear
+    }).start();
+    }, 500)
+    Animated.timing(this.state.height, {
+      toValue: 55,
       duration: 500,
       easing: Easing.linear
     }).start();
@@ -48,7 +60,7 @@ export default class AnimatedButton extends React.Component {
 
   select() {
     const widthAnimation = Animated.timing(this.state.width, {
-      toValue: 80,
+      toValue: 72,
       duration: 500,
       easing: Easing.linear
     });
@@ -107,7 +119,7 @@ export default class AnimatedButton extends React.Component {
         style={{
           flexDirection: 'column'
         }}>
-        <Animated.View style={this.state}>
+        <Animated.View style={{ borderRadius: this.state.borderRadius, height: this.state.height, opacity: this.state.opacity, width: this.state.width, alignSelf: 'center' }}>
           <Button
             onPress={onPress}
             label={label}
