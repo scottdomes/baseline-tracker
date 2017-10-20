@@ -11,6 +11,7 @@ import {
   Dimensions,
   Easing
 } from 'react-native';
+import LabelledTextInput from '../components/LabelledTextInput';
 import AnimatedButton from '../components/AnimatedButton';
 import { COLORS } from '../components/Theme';
 
@@ -59,6 +60,7 @@ export default class HomeScreen extends React.Component {
           style={styles.container}
           contentContainerStyle={styles.contentContainer}>
           {this.renderButtons()}
+          <LabelledTextInput />
         </ScrollView>
       </Animated.View>
     );
