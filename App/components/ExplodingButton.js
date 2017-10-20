@@ -3,7 +3,7 @@ import { Animated, Dimensions, Easing, View, Stylesheet } from 'react-native';
 import Button from './Button';
 
 // import { object } from 'prop-types'
-const ANIMATION_TIME = 800;
+const ANIMATION_TIME = 500;
 
 export default class ExplodingButton extends Component {
   constructor(props) {
@@ -21,6 +21,9 @@ export default class ExplodingButton extends Component {
   handlePress = () => {
     this.props.onPress().then(() => {
       this.explode();
+      setTimeout(() => {
+        this.deExplode();
+      }, 3000)
     });
   };
 
@@ -58,6 +61,39 @@ export default class ExplodingButton extends Component {
       easing: Easing.linear
     }).start()
     }, ANIMATION_TIME)
+  }
+
+  deExplode() {
+    const text = Animated.timing(this.state.textOpacity, {
+      toValue: 0,
+      duration: 500,
+      easing: Easing.linear});
+    const width = Animated.timing(this.state.width, {
+      toValue: 20,
+      duration: ANIMATION_TIME,
+      easing: Easing.linear
+    })
+    const height = Animated.timing(this.state.height, {
+      toValue: 0,
+      duration: ANIMATION_TIME,
+      easing: Easing.linear
+    })
+    const top = Animated.timing(this.state.top, {
+      toValue: 0,
+      duration: ANIMATION_TIME,
+      easing: Easing.linear
+    })
+    const left = Animated.timing(this.state.left, {
+      toValue: (Dimensions.get('window').width / 2) - 10,
+      duration: ANIMATION_TIME,
+      easing: Easing.linear
+    })
+    const opacity = Animated.timing(this.state.opacity, {
+      toValue: 0,
+      duration: 1,
+      easing: Easing.linear
+    })
+    Animated.parallel([width, height, top, left, opacity, text]).start();
   }
 
   render() {
