@@ -1,7 +1,8 @@
 import {
   SELECT_VALUE,
   CHANGE_RECORD_LOCATION,
-  CHANGE_RECORD_TAGS
+  CHANGE_RECORD_TAGS,
+  SAVE_RECORD
 } from '../constants';
 
 const DEFAULT_STATE = {

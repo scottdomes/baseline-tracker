@@ -7,10 +7,12 @@ import AnimatedButton from '../components/AnimatedButton';
 import {
   selectValueAction,
   changeRecordLocationAction,
-  changeRecordTagsAction
+  changeRecordTagsAction,
+  saveRecordAction
 } from '../actions';
 import { COLORS } from '../components/Theme';
 import LabelledTextInput from '../components/LabelledTextInput';
+import Button from '../components/Button';
 
 class RecordEntryForm extends Component {
   constructor(props) {
@@ -62,6 +64,15 @@ class RecordEntryForm extends Component {
     }
   };
 
+  handleSave = () => {
+    const { value, location, tags, saveRecord } = this.props
+    saveRecord({
+      value,
+      location,
+      tags
+    })
+  }
+
   render() {
     const { tags, location } = this.props;
     return (
@@ -78,6 +89,7 @@ class RecordEntryForm extends Component {
           onKeyPress={this.handleNewTagKeyDown}
         />
         {tags.map(tag => <Text key={tag}>{tag}</Text>)}
+        <Button label="Save" backgroundColor={COLORS[1]} onPress={this.handleSave} />
       </View>
     );
   }
@@ -87,7 +99,7 @@ function mapStateToProps(state) {
   return {
     value: state.newRecord.value,
     tags: state.newRecord.tags,
-    location: state.newRecord.location
+    location: state.newRecord.location,
   };
 }
 
@@ -96,7 +108,8 @@ function mapDispatchToProps(dispatch) {
     {
       selectValue: selectValueAction,
       changeTags: changeRecordTagsAction,
-      changeLocation: changeRecordLocationAction
+      changeLocation: changeRecordLocationAction,
+      saveRecord: saveRecordAction
     },
     dispatch
   );
