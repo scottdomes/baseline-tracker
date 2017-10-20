@@ -67,6 +67,7 @@ class RecordEntryForm extends Component {
   handleSave = () => {
     const { value, location, tags, saveRecord } = this.props
     saveRecord({
+      type: 'happiness',
       value,
       location,
       tags
