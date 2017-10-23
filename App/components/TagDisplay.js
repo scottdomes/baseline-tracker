@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-import { loadTagsAction, changeRecordTagsAction } from '../actions';
+import {
+  loadTagsAction,
+  changeRecordTagsAction,
+  removeRecordTagAction
+} from '../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Tag from './Tag';
@@ -10,8 +14,13 @@ class TagDisplay extends Component {
     this.props.loadTags();
   }
 
-  handleTagPress(tag) {
-    this.props.selectTag(tag);
+  handleTagPress(tag, selected) {
+    console.log(selected)
+    if (selected) {
+      this.props.removeRecordTag(tag);
+    } else {
+      this.props.selectTag(tag);
+    }
   }
 
   render() {
@@ -20,16 +29,21 @@ class TagDisplay extends Component {
     return (
       <View style={styles.container}>
         {addedTags.map(tag => {
-          return loadedTagsText.indexOf(tag) > -1 ? null : <Tag key={tag} text={tag} />;
+          return loadedTagsText.indexOf(tag) > -1 ? null : (
+            <Tag key={tag} text={tag} />
+          );
         })}
-        {loadedTags.map(tag => (
-          <Tag
-            onPress={this.handleTagPress.bind(this, tag.text)}
-            key={tag._id}
-            selected={addedTags.indexOf(tag.text) > -1}
-            text={tag.text}
-          />
-        ))}
+        {loadedTags.map(tag => {
+          const selected = addedTags.indexOf(tag.text) > -1;
+          return (
+            <Tag
+              onPress={this.handleTagPress.bind(this, tag.text, selected)}
+              key={tag._id}
+              selected={selected}
+              text={tag.text}
+            />
+          );
+        })}
       </View>
     );
   }
@@ -55,7 +69,8 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
       loadTags: loadTagsAction,
-      selectTag: changeRecordTagsAction
+      selectTag: changeRecordTagsAction,
+      removeRecordTag: removeRecordTagAction
     },
     dispatch
   );
