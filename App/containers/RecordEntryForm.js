@@ -13,6 +13,7 @@ import {
 import { COLORS } from '../components/Theme';
 import LabelledTextInput from '../components/LabelledTextInput';
 import ExplodingButton from '../components/ExplodingButton';
+import TagDisplay from '../components/TagDisplay';
 
 class RecordEntryForm extends Component {
   constructor(props) {
@@ -89,7 +90,7 @@ class RecordEntryForm extends Component {
           value={this.state.newTag}
           onKeyPress={this.handleNewTagKeyDown}
         />
-        {tags.map(tag => <Text key={tag}>{tag}</Text>)}
+        <TagDisplay />
         <ExplodingButton label="Save" backgroundColor={COLORS[1]} onPress={this.handleSave} />
       </View>
     );
