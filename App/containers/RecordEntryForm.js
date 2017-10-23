@@ -8,7 +8,8 @@ import {
   selectValueAction,
   changeRecordLocationAction,
   changeRecordTagsAction,
-  saveRecordAction
+  saveRecordAction,
+  addTagOptionAction
 } from '../actions';
 import { COLORS } from '../components/Theme';
 import LabelledTextInput from '../components/LabelledTextInput';
@@ -57,6 +58,7 @@ class RecordEntryForm extends Component {
   handleNewTagKeyDown = e => {
     const { key } = e.nativeEvent;
     if (key === ',' || key === ' ') {
+      this.props.addTagOption(this.state.newTag)
       this.props.changeTags(this.state.newTag);
       this.setState({ newTag: '' });
     } else {
@@ -111,7 +113,8 @@ function mapDispatchToProps(dispatch) {
       selectValue: selectValueAction,
       changeTags: changeRecordTagsAction,
       changeLocation: changeRecordLocationAction,
-      saveRecord: saveRecordAction
+      saveRecord: saveRecordAction,
+      addTagOption: addTagOptionAction
     },
     dispatch
   );
